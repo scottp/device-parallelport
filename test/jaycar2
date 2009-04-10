@@ -1,0 +1,18 @@
+#!/usr/bin/perl -w
+use strict;
+
+use Device::ParallelPort::JayCar2;
+
+my $jc = Device::ParallelPort::JayCar2->new(
+			card => 1,
+			# port => 0x378,
+	) or die "Can't create device";
+
+# Rellays 0-9
+$jc->rellay_on(0);
+$jc->rellay_off(0);
+
+# XXX:
+#       - Is there an abstraction for rellay controlled devices so that
+#         we can just give it a driver and then we can get a list of rellays
+#         supported, etc.

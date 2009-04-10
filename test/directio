@@ -1,0 +1,19 @@
+#!/usr/bin/perl -w
+use strict;
+use Device::ParallelPort;
+
+my $jc = Device::ParallelPort->new( $ARGV[0] || "parport:0") or die "Can not create controller";
+
+for (my $i = 0; $i <=3; $i++) {
+	print STDERR "Setting bit $i\n";
+	$jc->set_bit($i, 1);
+	sleep 1;
+}
+
+for (my $i = 0; $i <=3; $i++) {
+	print STDERR "Un-Setting bit $i\n";
+	$jc->set_bit($i, 0);
+	sleep 1;
+}
+
+

@@ -1,0 +1,16 @@
+Device::ParallelPort
+
+	- Better intructions on which drivers to use
+	- Demonstration of input for motion detector
+	- Update the dependenices (all of them)
+
+Device::ParallelPort::drv::*
+
+	- Add synopsis that says to use Device::ParallelPort
+	- Update the dependencies (all of them)
+	- Check for LINUX in Makefile.PL
+
+Device::ParallelPort::JayCar
+
+	- Create a test script
+

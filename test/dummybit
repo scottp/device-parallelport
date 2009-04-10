@@ -1,0 +1,33 @@
+#!/usr/bin/perl -w
+use strict;
+use lib '../lib';
+use lib 'lib';
+use Device::ParallelPort;
+
+print STDERR "CREATE Device\n";
+my $pp = Device::ParallelPort->new("dummy_byte")
+	or die("Can't create device");
+
+print STDERR "SET_BIT: 2,1\n";
+$pp->set_bit(2, 1);
+
+print STDERR "GET_BIT: 0 - ";
+print STDERR $pp->get_bit(0) . "\n";
+print STDERR "GET_BIT: 2 - ";
+print STDERR $pp->get_bit(2) . "\n";
+print STDERR "GET_BYTE 0 - ";
+print STDERR ord($pp->get_byte(0)) . "\n";
+print STDERR "GET_BYTE 1 - ";
+print STDERR ord($pp->get_byte(1)) . "\n";
+
+print STDERR "SET_BIT: 3,1\n";
+$pp->set_bit(3, 1);
+
+print STDERR "GET_BIT: 0 - ";
+print STDERR $pp->get_bit(0) . "\n";
+print STDERR "GET_BIT: 2 - ";
+print STDERR $pp->get_bit(2) . "\n";
+print STDERR "GET_BYTE 0 - ";
+print STDERR ord($pp->get_byte(0)) . "\n";
+print STDERR "GET_BYTE 1 - ";
+print STDERR ord($pp->get_byte(1)) . "\n";

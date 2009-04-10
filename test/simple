@@ -1,0 +1,74 @@
+#!/usr/bin/perl -w
+use strict;
+use lib '../lib';
+use Device::ParallelPort;
+
+# What this does
+# 	This basically does what is required to switch on the lounge lights in
+# 	my house. It just sets some bits on a latched device and then triggers
+# 	the update by choosing the address momentarily
+
+# Alternatives
+# 	parport:0
+# 	linux:0x378
+#	script:test/bin/direct {offset} {byte}
+my $pp = Device::ParallelPort->new("script:/home/scottp/dd/parallelport/test/direct/setbyte {byte} {offset}");
+# my $pp = Device::ParallelPort->new("parport:0");
+
+=remove
+
+die "THIS IS ALL WRONG - set_byte must use chr()"
+
+# Just set everything to 0
+print "TEST 1 - Turn off everything\n";
+$pp->set_byte(0, 0);		# First byte, all 0
+$pp->set_byte(1, 0); 		# Second byte, all 0
+$pp->set_byte(2, 0); 	 	# Third byte, all 0
+
+# Now turn on the light
+print "TEST 2 - Turn on just one light\n";
+$pp->set_byte(0, 1 << 4);	# Set the bit for this light
+$pp->set_byte(2, 11);		# Flash the address on then off
+$pp->set_byte(2, 10);
+
+
+# Leave it on for 5 seconds
+sleep 1;
+
+# Now turn it off and exit.
+print "TEST 3 - Turn off everything\n";
+$pp->set_byte(0, 0);		# Set everything off
+$pp->set_byte(2, 11);		# Flash the address on then off
+$pp->set_byte(2, 10);
+
+sleep 1;
+
+=cut
+
+# Now do it by turning on one bit, then nother etc...
+print "TEST 4 - Turn on just one light, then another, then first off\n";
+$pp->set_bit(4, 1);		# Set bit 4 (the 5th bit) on
+$pp->set_byte(2, 11);		# Flash the address on then off
+$pp->set_byte(2, 10);
+sleep 1;
+
+# Now set the next light on, but it should NOT turn off the other
+print "TEST 5 - Extra light\n";
+$pp->set_bit(2, 1);		# Set bit 4 (the 5th bit) on
+$pp->set_byte(2, 11);		# Flash the address on then off
+$pp->set_byte(2, 10);
+sleep 1;
+
+# Now turn off the first light
+print "TEST 6 - Turn off first light\n";
+$pp->set_bit(4, 0);		# Set bit 4 (the 5th bit) on
+$pp->set_byte(2, 11);		# Flash the address on then off
+$pp->set_byte(2, 10);
+sleep 1;
+
+# Horray :-)
+print "TEST 7 - Everything off\n";
+$pp->set_byte(0, 0);		# Set everything off
+$pp->set_byte(2, 11);		# Flash the address on then off
+$pp->set_byte(2, 10);
+

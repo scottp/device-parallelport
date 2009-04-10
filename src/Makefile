@@ -1,0 +1,4 @@
+all: linux_device_parallelport_byte
+
+linux_device_parallelport_byte: linux_device_parallelport_byte.c
+	gcc -O2 -o linux_device_parallelport_byte linux_device_parallelport_byte.c

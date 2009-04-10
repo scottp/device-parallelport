@@ -1,0 +1,20 @@
+#!/usr/bin/perl -w
+use strict;
+use Device::ParallelPort::JayCar;
+
+my $jc = Device::ParallelPort::JayCar->new(
+	$ARGV[0] || "script:/home/scottp/dd/parallelport/test/direct/setbyte {byte} {offset}", 
+	0
+) or die "Can not create JayCar controller";
+
+for (my $i = 0; $i < 9; $i++) {
+	$jc->on($i);
+	sleep 1;
+}
+
+for (my $i = 0; $i < 9; $i++) {
+	$jc->off($i);
+	sleep 1;
+}
+
+

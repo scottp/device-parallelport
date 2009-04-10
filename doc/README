@@ -1,0 +1,80 @@
+Notes on building the parallel port controller
+==============================================
+
+	- Low level driver
+	  	. /dev/parportX
+		. ioperm, outb, inb root version
+		. other operating systems (eg: Windows, Solaris etc)
+	- Mid level driver
+	  	. single layer, all apps through this
+	- High level drivers
+	  	. lp - example line printer
+		. jaycar demo card
+		. coffee faq
+
+Languages
+=========
+
+	- Perl
+	  	. Easy, linux, other OS
+
+	- C/C++
+	  	. Need some help, but basically not too difficult
+		. How to do multiple drivers?
+
+	- Java
+	  	. Ideal third choice, but how to control hardware?
+		. Easy with Linux /dev/parportX but not portable.
+	
+
+
+Important Mid Level
+===================
+
+	It seems to me that the mid level of this driver is the most important
+	part of the program. It is the communications to the lower levels, and
+	must provide all the functionality of the low level driver, but it must
+	be in a portable way and reduce the possability of duplicating code in
+	the higher level drivers.
+
+	In brief:
+		- Provide all the functionality of the low end drivers
+		- Abstract any code that would be duplicated in the high end
+		  drivers.
+
+Perl Functions
+==============
+
+	As I am writting the first version of this in perl (which I require for
+	the control of my solar equipment at home, and thus have a practicle
+	purpose for this straight away) I will be describing the API in the
+	terms of Perl first.
+
+
+	Example:
+		use Device::ParallelPort;
+
+		# Can defined a driver
+		my $driver = $ARGV[0] || undef;
+
+		my $pp = new Device::ParallelPort;
+
+		# Display some info (drivers, and ok for this os)
+		print "Drivers available: "
+			join(' ', $pp->drivers)
+			. "\n";
+		print "Drivers probably ok: "
+			join(' ', $pp->drivers_ok)
+			. "\n";
+		
+		if ($driver) {
+			$pp->driver($driver) || die "Can't select driver - $driver";
+		} else {
+			$pp->driver_auto || die "Can't choose driver";
+		}
+
+		# Display compatability for selected driver.
+
+
+		# Turn on/off some bits.
+
